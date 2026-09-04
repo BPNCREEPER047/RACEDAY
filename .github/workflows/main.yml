@@ -1,0 +1,91 @@
+# ============================================================
+# GitHub Actions CI/CD Workflow
+# RaceDay - Part 1: Validate Docs Folder Structure
+# ============================================================
+# This workflow runs every time you push code to GitHub.
+# It checks that all required planning documents are present
+# in the /docs folder before you submit.
+
+name: Validate Docs Folder
+
+# When to run this workflow
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  check-docs:
+    name: Check Required Files in /docs
+    runs-on: windows-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Check that the /docs folder exists
+      - name: Check docs folder exists
+        run: |
+          if (!(Test-Path -Path "docs")) {
+            Write-Error "ERROR: The /docs folder is missing!"
+            exit 1
+          }
+          Write-Host "OK: /docs folder found."
+        shell: pwsh
+
+      # Step 3: Check that the ERD file is present (PNG, PDF, or HTML)
+      - name: Check ERD file exists
+        run: |
+          $erd = Get-ChildItem -Path "docs" -Filter "erd_raceday.*" -ErrorAction SilentlyContinue
+          if ($null -eq $erd) {
+            Write-Error "ERROR: No ERD file found in /docs! Expected erd_raceday.png or erd_raceday.pdf"
+            exit 1
+          }
+          Write-Host "OK: ERD file found -> $($erd.Name)"
+        shell: pwsh
+
+      # Step 4: Check that the API endpoint plan is present
+      - name: Check API Endpoint Plan exists
+        run: |
+          if (!(Test-Path -Path "docs\api_endpoint_plan.md")) {
+            Write-Error "ERROR: api_endpoint_plan.md is missing from /docs!"
+            exit 1
+          }
+          Write-Host "OK: api_endpoint_plan.md found."
+        shell: pwsh
+
+      # Step 5: Check that the SQL script is present
+      - name: Check SQL Script exists
+        run: |
+          if (!(Test-Path -Path "docs\raceday_database.sql")) {
+            Write-Error "ERROR: raceday_database.sql is missing from /docs!"
+            exit 1
+          }
+          Write-Host "OK: raceday_database.sql found."
+        shell: pwsh
+
+      # Step 6: Check that README exists at the root
+      - name: Check README exists
+        run: |
+          if (!(Test-Path -Path "README.md")) {
+            Write-Error "ERROR: README.md is missing from the root of the repository!"
+            exit 1
+          }
+          Write-Host "OK: README.md found."
+        shell: pwsh
+
+      # Step 7: List all files in /docs so the build log shows them clearly
+      - name: List docs folder contents
+        run: |
+          Write-Host "============================================"
+          Write-Host "SUCCESS: All required Part 1 files found!"
+          Write-Host "============================================"
+          Write-Host "Files in /docs:"
+          Get-ChildItem -Path "docs" | Format-Table Name, Length, LastWriteTime
+        shell: pwsh
