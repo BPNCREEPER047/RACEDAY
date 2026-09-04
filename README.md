@@ -80,7 +80,8 @@ The video covers:
 
 ![CI/CD Green Build](docs/ci_screenshot.png)
 
-> *(Replace this placeholder with a screenshot of your successful GitHub Actions green build before submitting)*
+<img width="1919" height="1064" alt="image" src="https://github.com/user-attachments/assets/4a74d7bd-12fc-4feb-9402-8ba6fcc47d21" />
+
 
 ---
 
