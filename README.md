@@ -67,7 +67,7 @@ RaceDay/
 
 ## 🎥 Video Presentation
 
-📺 **YouTube Link:** `[PASTE YOUR YOUTUBE LINK HERE BEFORE SUBMITTING]`
+📺 **YouTube Link:** < https://youtu.be/5D0_xyocQIs >
 
 The video covers:
 - Walkthrough of the ERD and design decisions
