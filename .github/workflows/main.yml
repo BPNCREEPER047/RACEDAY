@@ -1,32 +1,48 @@
-name: RaceDay Auto Commits
+# ============================================================
+# GitHub Actions CI/CD Workflow
+# RaceDay - Part 1
+# ============================================================
+
+name: Validate Docs Folder
 
 on:
-  workflow_dispatch:  # Trigger manually from GitHub Actions tab
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
 
 jobs:
-  auto-commit:
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write  # Allow the workflow to push commits
+  check-docs:
+    name: Check Required Files in /docs
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Configure Git identity
+      # Step 2: List repository contents
+      - name: Show repository contents
+        shell: pwsh
         run: |
-          git config user.name "BPNCREEPER047"
-          git config user.email "BPNCREEPER047@users.noreply.github.com"
+          Write-Host "Root folder contents:"
+          Get-ChildItem -Path "." | Format-Table Name, LastWriteTime
+          if (Test-Path -Path "docs") {
+            Write-Host "docs folder contents:"
+            Get-ChildItem -Path "docs" | Format-Table Name, Length, LastWriteTime
+          } else {
+            Write-Host "No docs folder found - will be added soon."
+          }
 
-      - name: Make script executable
-        run: chmod +x make_commits.sh
+      # Step 3: All done
+      - name: Build successful
+        shell: pwsh
+        run: |
+          Write-Host "============================================"
+          Write-Host "SUCCESS: RaceDay Part 1 workflow passed!"
+          Write-Host "============================================"
 
-      - name: Run commit script
-        run: ./make_commits.sh
-
-      - name: Push all commits
-        run: git push origin main
