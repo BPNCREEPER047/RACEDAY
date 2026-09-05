@@ -73,7 +73,7 @@ The video covers:
 - Explanation of the API endpoint plan choices
 - Live run of the SQL script in SSMS
 
----
+
 
 ## ✅ CI/CD Screenshot
 
