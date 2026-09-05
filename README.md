@@ -83,8 +83,6 @@ The video covers:
 
 
 
----
-
 ## 🛠️ Tools Used
 
 - SQL Server Management Studio (SSMS) – database design and scripting
