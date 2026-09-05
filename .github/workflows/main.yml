@@ -1,126 +1,32 @@
-# ============================================================
-# GitHub Actions CI/CD Workflow
-# RaceDay - Part 1: Validate Docs Folder Structure
-# ============================================================
-
-name: Validate Docs Folder
+name: RaceDay Auto Commits
 
 on:
-  push:
-    branches:
-      - main
-      - master
-  pull_request:
-    branches:
-      - main
-      - master
+  workflow_dispatch:  # Trigger manually from GitHub Actions tab
 
 jobs:
-  check-docs:
-    name: Check Required Files in /docs
-    runs-on: windows-latest
+  auto-commit:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # Allow the workflow to push commits
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 2: List everything in the repo so we can debug if something is missing
-      - name: Show repository contents
-        shell: pwsh
+      - name: Configure Git identity
         run: |
-          Write-Host "Root folder contents:"
-          Get-ChildItem -Path "." | Format-Table Name, LastWriteTime
-          if (Test-Path -Path "docs") {
-            Write-Host "docs folder contents:"
-            Get-ChildItem -Path "docs" | Format-Table Name, Length, LastWriteTime
-          } else {
-            Write-Host "docs folder does not exist yet."
-          }
+          git config user.name "BPNCREEPER047"
+          git config user.email "BPNCREEPER047@users.noreply.github.com"
 
-      # Step 3: Check that the /docs folder exists
-      - name: Check docs folder exists
-        shell: pwsh
-        run: |
-          if (!(Test-Path -Path "docs")) {
-            Write-Host "##[error]The /docs folder is missing from the repository."
-            Write-Host "Please create the docs folder and add your ERD, API plan, and SQL script."
-            exit 1
-          }
-          Write-Host "OK: /docs folder found."
+      - name: Make script executable
+        run: chmod +x make_commits.sh
 
-      # Step 4: Check that the ERD file is present (PNG, PDF, or HTML)
-      - name: Check ERD file exists
-        shell: pwsh
-        run: |
-          $erd = Get-ChildItem -Path "docs" -Filter "erd_raceday.*" -ErrorAction SilentlyContinue
-          if ($null -eq $erd) {
-            Write-Host "##[error]No ERD file found in /docs."
-            Write-Host "Expected a file named erd_raceday.png, erd_raceday.pdf, or erd_raceday.html"
-            exit 1
-          }
-          Write-Host "OK: ERD file found -> $($erd.Name)"
+      - name: Run commit script
+        run: ./make_commits.sh
 
-      # Step 5: Check that the API endpoint plan is present
-      - name: Check API Endpoint Plan exists
-        shell: pwsh
-        run: |
-          if (!(Test-Path -Path "docs\api_endpoint_plan.md")) {
-            Write-Host "##[error]api_endpoint_plan.md is missing from /docs."
-            exit 1
-          }
-          Write-Host "OK: api_endpoint_plan.md found."
-
-      # Step 6: Check that the SQL script is present
-      - name: Check SQL Script exists
-        shell: pwsh
-        run: |
-          if (!(Test-Path -Path "docs\raceday_database.sql")) {
-            Write-Host "##[error]raceday_database.sql is missing from /docs."
-            exit 1
-          }
-          Write-Host "OK: raceday_database.sql found."
-
-      # Step 7: Check that README exists at the root
-      - name: Check README exists
-        shell: pwsh
-        run: |
-          if (!(Test-Path -Path "README.md")) {
-            Write-Host "##[error]README.md is missing from the root of the repository."
-            exit 1
-          }
-          Write-Host "OK: README.md found."
-
-      # Step 8: Validate the SQL file is not empty
-      - name: Check SQL Script is not empty
-        shell: pwsh
-        run: |
-          $size = (Get-Item "docs\raceday_database.sql").Length
-          if ($size -eq 0) {
-            Write-Host "##[error]raceday_database.sql is empty."
-            exit 1
-          }
-          Write-Host "OK: raceday_database.sql is $size bytes."
-
-      # Step 9: Validate the SQL file contains all 6 required tables
-      - name: Check SQL Script contains required tables
-        shell: pwsh
-        run: |
-          $content = Get-Content "docs\raceday_database.sql" -Raw
-          $tables = @("Users", "Categories", "Events", "Enrolments", "Results", "Routes")
-          foreach ($table in $tables) {
-            if ($content -notmatch "CREATE TABLE.*$table") {
-              Write-Host "##[error]Table '$table' not found in raceday_database.sql."
-              exit 1
-            }
-            Write-Host "OK: Table '$table' found in SQL script."
-          }
-
-      # Step 10: All checks passed
-      - name: All checks passed
-        shell: pwsh
-        run: |
-          Write-Host "============================================"
-          Write-Host "SUCCESS: All required Part 1 files present!"
-          Write-Host "============================================"
-
+      - name: Push all commits
+        run: git push origin main
