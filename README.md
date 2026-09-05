@@ -2,7 +2,7 @@
 
 A full-stack web-based event management platform built for the South African road running, walking, and cycling community.
 
----
+
 
 ## 📋 System Description
 
