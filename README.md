@@ -80,7 +80,8 @@ The video covers:
 
 ![CI/CD Green Build](docs/ci_screenshot.png)
 
-<img width="1919" height="1064" alt="image" src="https://github.com/user-attachments/assets/4a74d7bd-12fc-4feb-9402-8ba6fcc47d21" />
+<img width="1907" height="641" alt="image" src="https://github.com/user-attachments/assets/f8e7505a-3e0b-48ea-93c8-b08808494072" />
+
 
 
 ---
