@@ -62,7 +62,7 @@ RaceDay/
 
 > ⚠️ The script drops and recreates the database on each run — safe for a clean instance.
 
----
+
 
 ## 🎥 Video Presentation
 
