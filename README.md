@@ -30,7 +30,7 @@ The system is built progressively across three parts, ending in a fully containe
 
 > Role-based access is enforced at the API level (Part 2) and reflected in the MVC interface (Part 3).
 
----
+
 
 ## 📁 Repository Structure
 
