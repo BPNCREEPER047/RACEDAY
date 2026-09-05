@@ -90,7 +90,7 @@ The video covers:
 
 - SQL Server Management Studio (SSMS) – database design and scripting
 - GitHub Actions – CI/CD workflow for document validation
-- Draw.io / manual ERD design
+- dbdiagram.io
 
 ---
 
