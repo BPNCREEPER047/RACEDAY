@@ -46,7 +46,7 @@ RaceDay/
 └── README.md                      ← This file
 ```
 
----
+
 
 ## ⚙️ Setup Instructions (Running the SQL Script)
 
