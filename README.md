@@ -96,8 +96,6 @@ The video covers:
 
 ## 📌 AI Usage Disclosure
 
-> *(If you used any AI tools during planning, proofreading, or structuring — disclose briefly here as required by the assignment instructions. Example: "AI was used to assist with proofreading the README and checking SQL syntax.")*
-
----
+i used some AI tools to help me understand my API endpoint plan.
 
 *© The Independent Institute of Education (Pty) Ltd 2026 – Student Submission*
