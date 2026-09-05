@@ -13,7 +13,6 @@ A full-stack web-based event management platform built for the South African roa
 
 The system is built progressively across three parts, ending in a fully containerised, cloud-aware, API-driven platform.
 
----
 
 ## 👤 User Roles
 
