@@ -98,4 +98,4 @@ The video covers:
 
 i used some AI tools to help me understand my API endpoint plan.
 
-*© The Independent Institute of Education (Pty) Ltd 2026 – Student Submission*
+
